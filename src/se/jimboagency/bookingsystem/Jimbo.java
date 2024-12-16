@@ -1,5 +1,6 @@
 package se.jimboagency.bookingsystem;
 
+import se.jimboagency.bookingsystem.logic.LogicManager;
 import se.jimboagency.bookingsystem.ui.UIManager;
 
 public class Jimbo {
@@ -13,7 +14,12 @@ public class Jimbo {
 		finns ska det finnas en metod i klassen UIManager som bara vidarebefordrar anropet från
 		Jimbo till metoden som ligger i logic paketet. Till exempel autentisering.
 		*/
-		UIManager UI = new UIManager();
+		
+		LogicManager logicmanager = new LogicManager(args);
+		UIManager UImanager = new UIManager(logicmanager);
+		UImanager.showMainMenu();
+		
+		
 	
 		
 	}
