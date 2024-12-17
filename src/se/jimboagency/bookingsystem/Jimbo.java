@@ -17,7 +17,7 @@ public class Jimbo {
 		
 		LogicManager logicmanager = new LogicManager(args);
 		UIManager UImanager = new UIManager(logicmanager);
-		UImanager.showMainMenu();
+		UImanager.start(args);
 		
 		
 	

@@ -1,6 +1,7 @@
 package se.jimboagency.bookingsystem.ui;
 
-import se.jimboagency.bookingsystem.logic.LogicManager;
+import se.jimboagency.bookingsystem.*;
+import se.jimboagency.bookingsystem.logic.*;
 
 public class UIManager extends LogicManager {
 
@@ -12,22 +13,31 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 ● UIManager instansieras i klassen Jimbo.
 ● Jimbo har has-a relation med UIManager( composition ).*/
 
-	
-
-	public showMainMenu() {
-		
-		
-	}
+	private LogicManager logicmanager;
 	private Boolean val;
 	
-	public void showMainMenu() {
+	public UIManager (LogicManager logicManager) {
+		this.logicmanager = logicManager;
+	}
+	
+	
+	
+	public void start(String[] args) {
 		
 		if(LogicManager.authenticate()) {
-			switch(val) {
-			
-			}
+			System.out.println("Gött mos programmet får inte överdos :) ");
+			showMainMenu();
+		}else {
+			System.out.println("Gött mos men tyvärr överdos :( ");
+			//avsluta programmet på något sätt
 		}
 		
+	}
+
+
+
+	private void showMainMenu() {
+		// TODO Auto-generated method stub
 		
 	}
 }
