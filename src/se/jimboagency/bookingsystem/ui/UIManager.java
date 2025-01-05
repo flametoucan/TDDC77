@@ -40,4 +40,8 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private void showSideMenu() {
+		
+	}
 }

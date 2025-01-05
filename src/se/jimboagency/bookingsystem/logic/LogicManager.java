@@ -40,6 +40,25 @@ public class LogicManager {
 	
 	}
 	
+	public void CreateFlight() {
+		
+	}
+	
+	public void DeleteFlight() {
+		
+	}
+	
+	public void SearchBooking() {
+		
+	}
+	
+	public void CreateBooking() {
+		
+	}
+
+	public void UpdateBooking() {
+	
+	}
 }
 
 
