@@ -22,12 +22,16 @@ public class LogicManager {
 		if(args.length == 4) {
 			if(args[0].equals("-u") && args[2].equals("-p")) {
 				User employee = new User(args[1],args[3]);
-			} return; // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
-			}else if(args[0].equals("-p") && args[2].equals("-u")) {
+				return true;
+			}  // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
+			
+			else if(args[0].equals("-p") && args[2].equals("-u")) {
 				User employee = new User(args[3],args[1]);
-		} return; // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
-		return false;
-	} 
+				return true;
+			} // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
+		}
+	return false;
+	}
 	//skapa hashset för allt
 	
 	private String[] days = {"måndag","tisdag","onsdag","torsdag", "fredag", "lördag", "söndag"};
