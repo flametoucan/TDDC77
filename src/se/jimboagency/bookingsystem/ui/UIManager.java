@@ -1,7 +1,6 @@
 package se.jimboagency.bookingsystem.ui;
 
 import se.jimboagency.bookingsystem.*;
-import se.jimboagency.bookingsystem.logic.*;
 
 public class UIManager extends LogicManager {
 
@@ -20,8 +19,6 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		this.logicmanager = logicManager;
 	}
 	
-	
-	
 	public void start(String[] args) {
 		
 		if(LogicManager.authenticate()) {
@@ -34,14 +31,8 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		
 	}
 
-
-
 	private void showMainMenu() {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	private void showSideMenu() {
 		
 	}
 }
