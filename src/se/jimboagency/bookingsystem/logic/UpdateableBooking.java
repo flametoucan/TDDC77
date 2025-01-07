@@ -4,7 +4,7 @@ public class UpdateableBooking extends Booking{
 
 	public void UpdateCheck(boolean IsUpdateable) {
 		if (IsUpdateable == true) {
-			UpdateBooking();
+			LogicManager.UpdateBooking();
 			/*Hitta något sätt att koppla till updatebooking i logicmanager*/
 		}
 	}
