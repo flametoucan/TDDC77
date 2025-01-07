@@ -2,7 +2,7 @@ package se.jimboagency.bookingsystem.ui;
 
 import se.jimboagency.bookingsystem.*;
 
-public class UIManager extends LogicManager {
+public class UIManager {
 
 
 	/*UIManager är en klass som ligger i ui paketet och är ansvarig för att kommunicera med
