@@ -14,7 +14,7 @@ public abstract class Booking extends Flight{
         char letter2 = (char) ('A' + random.nextInt(26)); // Random letter between 'A' and 'Z'
 
         // Generate three random digits
-        int number = random.nextInt(1000); // Skapar ett nummer mellan 0 och 999
+        int number = random.nextInt(1000); // Skapar ett nummer mellan 000 och 999
 
         // Sätter ihop bokstäverna och numret och returnerar värdet som "XX000"
         return String.format("%c%c%03d", letter1, letter2, number);

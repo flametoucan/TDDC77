@@ -40,8 +40,42 @@ public class LogicManager {
 	
 	}
 	
-	public void CreateFlight() {
+	public class CreateFlight {
 		
+		public static Flight CreateFlight() {
+			Scanner scanner = new Scanner(System.in);
+			
+			System.out.println("Enter flightnumber: ");
+			String FlightNumb = scanner.nextLine();
+			
+			System.out.println("Enter departure city: ");
+			String DepartureCity = scanner.nextLine();
+			
+			System.out.println("Enter departure day: ");
+			String DepartureDay = scanner.nextLine();
+			
+			System.out.println("Enter departure time: ");
+			String DepartureTime = scanner.nextLine();
+			
+			System.out.println("Enter week number: ");
+			int Week = scanner.nextInt();
+			
+			System.out.println("Enter number of seats: ");
+			int NumberOfSeats = scanner.nextInt();
+			
+			System.out.println("Enter arrival city: ");
+			String ArrivalCity = scanner.nextLine();
+			
+			Flight flight = new Flight(FlightNumb, DepartureCity, DepartureDay, DepartureTime, Week, NumberOfSeats, ArrivalCity);
+			return flight;
+			
+		}
+		
+		public static void main(String[] args) {
+	        // Test the createFlight method
+	        Flight newFlight = CreateFlight();
+	        System.out.println("Flight created: " + newFlight);
+	    }
 	}
 	
 	public void DeleteFlight() {

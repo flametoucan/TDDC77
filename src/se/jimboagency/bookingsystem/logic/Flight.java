@@ -27,6 +27,11 @@ public class Flight {
 		this.NumberOfSeats = NumberOfSeats;
 	}
 
+	public Flight(String flightNumb2, String departureCity2, String departureDay2, String departureTime2, int week2,
+			int numberOfSeats2, String arrivalCity2) {
+		
+	}
+
 	public void Seats() {
 		
 	}
@@ -75,14 +80,6 @@ public class Flight {
 		ArrivalCity = arrivalCity;
 	}
 
-	public String getTravelTime() {
-		return TravelTime;
-	}
-
-	public void setTravelTime(String travelTime) {
-		TravelTime = travelTime;
-	}
-
 	public int getWeek() {
 		return Week;
 	}
@@ -107,4 +104,14 @@ public class Flight {
 		NumberOfSeats = numberOfSeats;
 	}
 	
+	@Override
+	public String toString() {
+		return "Flight " +FlightNumb +" { \t" + 
+		"Departure city = " +DepartureCity +"\t" +
+		"Departure day = " +DepartureDay +"\t" +
+		"Departure time = " +DepartureTime +"\t" +
+		"Departure week = " +Week +"\t" +
+		"Number of seats = " +NumberOfSeats +"\t" +
+		"Arrival city = " +ArrivalCity;
+	}
 }
