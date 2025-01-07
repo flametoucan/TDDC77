@@ -1,6 +1,7 @@
 package se.jimboagency.bookingsystem.ui;
 
 import se.jimboagency.bookingsystem.*;
+import se.jimboagency.bookingsystem.logic.LogicManager;
 
 public class UIManager {
 
@@ -32,7 +33,20 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 
 	private void showMainMenu() {
-		// TODO Auto-generated method stub
 		
+		/*Pseudocode
+		+                * bool continue = true;
+		+                * while(continue) {
+		+                *      Show menu
+		+                *      take user input
+		+                *      switch(user_choice) {
+		+                * ...
+		+                * ...
+		+                * case "exit" {
+		+                *  break;
+		+                * }
+		+                * };
+		+                * }
+		+                * */
 	}
 }
