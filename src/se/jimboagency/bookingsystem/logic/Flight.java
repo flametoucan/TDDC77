@@ -1,47 +1,67 @@
 package se.jimboagency.bookingsystem.logic;
 
+import java.util.Random;
+import java.time.*;
+
+
 public class Flight {
 	
-	private String FlightNumb;
+	private String FlightNumber;
 	private String DepartureCity;
 	private String DepartureDay;
 	private String DepartureTime;
 	private String ArrivalCity;
 	private String ArrivalDay;
 	private String ArrivalTime;
-	private String TravelTime;
+	private String TravelTimeHours;
+	private String TravelTimeMinutes;
 	private int Week;
 	private int Year;
 	private int NumberOfSeats;
 	
-	public Flight (String FlightNumb, String DepartureCity, String DepartureDay, String DepartureTime, String ArrivalCity, String ArrivalDay, String ArrivalTime, String TravelTime, int Week, int Year, int NumberOfSeats) {
-		this.FlightNumb = FlightNumb;
+	public Flight (String FlightNumber, String DepartureCity, String DepartureDay, String DepartureTime, String ArrivalCity, String ArrivalDay, String ArrivalTime, String TravelTimeHours, String TravelTimeMinutes, int Week, int Year, int NumberOfSeats) {
+		this.FlightNumber = FlightNumber;
 		this.DepartureCity = DepartureCity;
 		this.DepartureDay = DepartureDay;
 		this.DepartureTime = DepartureTime;
 		this.ArrivalCity = ArrivalCity;
 		this.ArrivalDay = ArrivalDay;
 		this.ArrivalTime = ArrivalTime;
-		this.TravelTime = TravelTime;
+		this.TravelTimeHours = TravelTimeHours;
+		this.TravelTimeMinutes = TravelTimeMinutes;
 		this.Week = Week;
 		this.Year = Year;
 		this.NumberOfSeats = NumberOfSeats;
+	}
+
+	public Flight(String departureCity2, String arrivalCity2, String departureDay2,
+			LocalTime departureTime2, long travelTimeHours2, long travelTimeMinutes2, int numberOfSeats2, int numberOfSeats3) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void Seats() {
 		
 	}
 	
-	public void FlightNumber() {
+	public String FlightNumber() {
+		Random random = new Random();
 		
+		char letter1 = (char) ('A' + random.nextInt(26)); // Random letter between 'A' and 'Z'
+        char letter2 = (char) ('A' + random.nextInt(26)); // Random letter between 'A' and 'Z'
+
+        // Generate three random digits
+        int number = random.nextInt(1000); // Skapar ett nummer mellan 000 och 999
+
+        // Sätter ihop bokstäverna och numret och returnerar värdet som "XX000"
+        return String.format("%c%c%03d", letter1, letter2, number);
 	}
 	
-	public String getFlightNumb() {
-		return FlightNumb;
+	public String getFlightNumber() {
+		return FlightNumber;
 	}
 
-	public void setFlightNumb(String flightNumb) {
-		FlightNumb = flightNumb;
+	public void setFlightNumber(String flightNumber) {
+		FlightNumber = flightNumber;
 	}
 
 	public String getDepartureCity() {
@@ -92,12 +112,20 @@ public class Flight {
 		ArrivalTime = arrivalTime;
 	}
 
-	public String getTravelTime() {
-		return TravelTime;
+	public String getTravelTimeHours() {
+		return TravelTimeHours;
 	}
 
-	public void setTravelTime(String travelTime) {
-		TravelTime = travelTime;
+	public void setTravelTimeHours(String travelTimeHours) {
+		TravelTimeHours = travelTimeHours;
+	}
+	
+	public String getTravelTimeMinutes() {
+		return TravelTimeMinutes;
+	}
+
+	public void setTravelTimeMinutes(String travelTimeMinutes) {
+		TravelTimeMinutes = travelTimeMinutes;
 	}
 
 	public int getWeek() {
@@ -126,7 +154,7 @@ public class Flight {
 	
 	@Override
 	public String toString() {
-		return "Flight created: " +FlightNumb +" { \n" + 
+		return "Flight created: " +FlightNumber +" { \n" + 
 		"Departure city = " +DepartureCity +"\t" +
 		"Arrival city = " +ArrivalCity +"\n" +
 		"Departure day = " +DepartureDay +"\t" +
