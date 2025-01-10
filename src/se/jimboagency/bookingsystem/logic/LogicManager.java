@@ -10,11 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-<<<<<<< HEAD
-=======
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
->>>>>>> mabjo196
 import java.time.*;
 
 public class LogicManager {
