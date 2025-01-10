@@ -3,23 +3,22 @@ package se.jimboagency.bookingsystem.logic;
 import java.util.Random;
 import java.time.*;
 
-
-public class Flight {
+public class Flight extends Airline {
 	
 	private String FlightNumber;
 	private String DepartureCity;
 	private String DepartureDay;
-	private String DepartureTime;
+	private LocalTime DepartureTime;
 	private String ArrivalCity;
 	private String ArrivalDay;
 	private String ArrivalTime;
-	private String TravelTimeHours;
-	private String TravelTimeMinutes;
+	private long TravelTimeHours;
+	private long TravelTimeMinutes;
 	private int Week;
 	private int Year;
 	private int NumberOfSeats;
 	
-	public Flight (String FlightNumber, String DepartureCity, String DepartureDay, String DepartureTime, String ArrivalCity, String ArrivalDay, String ArrivalTime, String TravelTimeHours, String TravelTimeMinutes, int Week, int Year, int NumberOfSeats) {
+	public Flight (String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime, long TravelTimeHours, long TravelTimeMinutes, int Week, int Year) {
 		this.FlightNumber = FlightNumber;
 		this.DepartureCity = DepartureCity;
 		this.DepartureDay = DepartureDay;
@@ -32,11 +31,6 @@ public class Flight {
 		this.Week = Week;
 		this.Year = Year;
 		this.NumberOfSeats = NumberOfSeats;
-	}
-
-	public Flight(String departureCity2, String arrivalCity2, String departureDay2,
-			LocalTime departureTime2, long travelTimeHours2, long travelTimeMinutes2, int numberOfSeats2, int numberOfSeats3) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void Seats() {
@@ -80,11 +74,11 @@ public class Flight {
 		DepartureDay = departureDay;
 	}
 
-	public String getDepartureTime() {
+	public LocalTime getDepartureTime() {
 		return DepartureTime;
 	}
 
-	public void setDepartureTime(String departureTime) {
+	public void setDepartureTime(LocalTime departureTime) {
 		DepartureTime = departureTime;
 	}
 
@@ -112,19 +106,19 @@ public class Flight {
 		ArrivalTime = arrivalTime;
 	}
 
-	public String getTravelTimeHours() {
+	public long getTravelTimeHours() {
 		return TravelTimeHours;
 	}
 
-	public void setTravelTimeHours(String travelTimeHours) {
+	public void setTravelTimeHours(long travelTimeHours) {
 		TravelTimeHours = travelTimeHours;
 	}
 	
-	public String getTravelTimeMinutes() {
+	public long getTravelTimeMinutes() {
 		return TravelTimeMinutes;
 	}
 
-	public void setTravelTimeMinutes(String travelTimeMinutes) {
+	public void setTravelTimeMinutes(long travelTimeMinutes) {
 		TravelTimeMinutes = travelTimeMinutes;
 	}
 

@@ -13,6 +13,5 @@ public class User {
 		this.ett = ett;
 		this.två = två;
 	}
-	
 	//gör metod som kollar om värdena stämmer
 }

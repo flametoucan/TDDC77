@@ -1,46 +1,40 @@
 package se.jimboagency.bookingsystem.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.*;
 
+import se.jimboagency.bookingsystem.logic.Flight;
+import se.jimboagency.bookingsystem.ui.*;
+
 public class LogicManager {
 
 	//inlogg
-	private static String[] args;
+	private String[] args;
+	private LogicManager logicmanager;
 		
-		public LogicManager(String[] args) {
-			LogicManager.args = args; // Assign the argument array to the static field
+	public LogicManager(String[] args) {
+		this.args = args;
 	}
 	
-	public static boolean authenticate() {
+	public boolean authenticate() {
 		if(args.length == 4) {
 			if(args[0].equals("-u") && args[2].equals("-p")) {
 				User employee = new User(args[1],args[3]);
 				return true;
-			}  // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
+			}  
 			
 			else if(args[0].equals("-p") && args[2].equals("-u")) {
 				User employee = new User(args[3],args[1]);
 				return true;
-			} // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
-		}
+			} 
+		} //employee has nothing in it currently
 	return false;
 	}
-	
-	public class CreateFlight {
 		
-		public static Flight CreateFlight() {
+		/*public void CreateFlight() {
 			Scanner scanner = new Scanner(System.in);
 			
 			System.out.println("Enter departure city: ");
@@ -79,62 +73,101 @@ public class LogicManager {
 			System.out.println("Enter number of seats: ");
 			int NumberOfSeats = scanner.nextInt();
 			
-			Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
-			return flight;
-			
-		}
+			//scanner.close(); 
+
+			//Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
+
+			//return flight;
+		}*/
 		
-		public static void main(String[] args) {
+		public String CreateFlight(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime,Long TravelTimeHours,Long TravelTimeMinutes,int Week, int NumberOfSeats) {
 	        // Test the createFlight method
-	        Flight newFlight = CreateFlight();
-	        System.out.println("Flight created: " + newFlight);
+	        //Flight newFlight = CreateFlight();
+			Flight flight = new Flight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
+			System.out.println(
+				"Flight created: " +flight.getFlightNumber() +" { \n" + 
+				"Departure city = " +flight.getDepartureCity() +"\t" +
+				"Arrival city = " +flight.getArrivalCity() +"\n" +
+				"Departure day = " +flight.getDepartureDay() +"\t" +
+				"Arrival day = " +flight.getArrivalDay() +"\n" +
+				"Departure time = " +flight.getDepartureTime() +"\t" +
+				"Arrival time = " +flight.getArrivalTime() +"\n" +
+				"Departure week = " +flight.getWeek() +"\t" +
+				"Number of seats = " +flight.getNumberOfSeats() +"\t");
+	       //System.out.println("Flight created: " + newFlight);
+					return "";
 	    }
-	}
-	public static void MainMenu() {
-
+	
+	public void MainMenu() {
+		boolean continueLoop = true;
 		Scanner input = new Scanner(System.in);
+		while(continueLoop) {
+			System.out.println("Menu:");
+			System.out.println("1. Create Flight");
+			System.out.println("2. Delete Flight");
+			System.out.println("3. Create Booking");
+			System.out.println("5. Search Booking");
+			System.out.println("6. Update Booking");
+			System.out.println("7. Show Current Time");
+			System.out.println("8. Show Current Date");
+			System.out.println("9. Exit");
+			
+			//UImanager.Choice();
 
-		System.out.println("Menu:");
-        System.out.println("1. Create Flight");
-        System.out.println("2. Delete Flight");
-        System.out.println("3. Create Booking");
-        System.out.println("4. Search Booking");
-        System.out.println("5. Update Booking");
-        System.out.println("6. Show Current Time");
-        System.out.println("7. Show Current Date");
-        System.out.println("8. ");
-        System.out.println("9. Exit");
-		
-		int val = input.nextInt();
+			int val = input.nextInt();
 
-            switch (val) {
+			switch (val) {
 				case 1:
+					//CreateFlight();
+					/*System.out.println(
+						"Flight created: " +Flight.getFlightNumber() +" { \n" + 
+						"Departure city = " +Flight.getDepartureCity() +"\t" +
+						"Arrival city = " +Flight.getArrivalCity() +"\n" +
+						"Departure day = " +Flight.getDepartureDay() +"\t" +
+						"Arrival day = " +Flight.getArrivalDay() +"\n" +
+						"Departure time = " +Flight.getDepartureTime() +"\t" +
+						"Arrival time = " +Flight.getArrivalTime() +"\n" +
+						"Departure week = " +Flight.getWeek() +"\t" +
+						"Number of seats = " +Flight.getNumberOfSeats() +"\t");*/
 				break;
 				case 2:
+					DeleteFlight();
+					//System.out.println("Flight deleted: " + Flight.getFlightNumber());
 				break;
 				case 3:
-				break;
-				case 4:
+					CreateBooking();
 				break;
 				case 5:
+					SearchBooking();
 				break;
 				case 6:
+					UpdateBooking();
 				break;
 				case 7:
+				LocalTime currentTime = LocalTime.now();
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				String formattedTime = currentTime.format(formatter);
+		
+				System.out.println("Formatted time: " + formattedTime);
 				break;
 				case 8:
+				LocalDate currentDate = LocalDate.now();
+
+	        	DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+   		     	String formattedDate = currentDate.format(formatter2);
+
+        		System.out.println("Current Date: " + formattedDate);
 				break;
 				case 9:
+					continueLoop = false;
 				break;
 
 			}
+		}
 
 	}
 	public void DeleteFlight() {
-		
-	}
-	
-	public void SearchBooking() {
 		
 	}
 	
@@ -142,7 +175,11 @@ public class LogicManager {
 		
 	}
 
-	public static void UpdateBooking() {
+	public void SearchBooking() {
+		
+	}
+	
+	public void UpdateBooking() {
 	
 	}
 	public void ShowBooking() {
