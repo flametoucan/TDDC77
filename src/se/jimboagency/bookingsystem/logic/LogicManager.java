@@ -97,6 +97,9 @@ public class LogicManager {
 	public void UpdateBooking() {
 	
 	}
+	public void ShowBooking() {
+		// ska printa i formatet Resenummer — Flygnummer — Avgångs stad(Avgångs dag) — Ankomst stad(Ankomst dag) — Veckonummer — År — Avgångstid — Ankomsttid
+	}
 }
 
 
