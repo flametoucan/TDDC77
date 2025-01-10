@@ -10,14 +10,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.time.*;
 
 public class LogicManager {
 
 	//inlogg
 	private static String[] args;
-	public LogicManager(String[] args2) {
-		//lägg in users typ, kke lite mer grejs
+		
+		public LogicManager(String[] args) {
+			LogicManager.args = args; // Assign the argument array to the static field
 	}
+	
 	public static boolean authenticate() {
 		if(args.length == 4) {
 			if(args[0].equals("-u") && args[2].equals("-p")) {
@@ -31,17 +34,6 @@ public class LogicManager {
 			} // kolla med hjälp av userklassen om inlogg e rätt så att man returnar true om de e sant
 		}
 	return false;
-	}
-	//skapa hashset för allt
-	
-	private String[] days = {"måndag","tisdag","onsdag","torsdag", "fredag", "lördag", "söndag"};
-	public void Sets() {
-	HashSet<String> city = new HashSet<String>();
-	HashSet<String> day = new HashSet<String>();
-	HashSet<String> departure = new HashSet<String>();
-	HashSet<String> arrival = new HashSet<String>();
-	//lägg till lite dler men måste kolla vilken sort de ska vara
-	
 	}
 	
 	public class CreateFlight {
@@ -81,7 +73,46 @@ public class LogicManager {
 	        System.out.println("Flight created: " + newFlight);
 	    }
 	}
-	
+	public static void MainMenu() {
+
+		Scanner input = new Scanner(System.in);
+
+		System.out.println("Menu:");
+        System.out.println("1. Create Flight");
+        System.out.println("2. Delete Flight");
+        System.out.println("3. Create Booking");
+        System.out.println("4. Search Booking");
+        System.out.println("5. Update Booking");
+        System.out.println("6. Show Current Time");
+        System.out.println("7. Show Current Date");
+        System.out.println("8. ");
+        System.out.println("9. Exit");
+		
+		int val = input.nextInt();
+
+            switch (val) {
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+				case 5:
+				break;
+				case 6:
+				break;
+				case 7:
+				break;
+				case 8:
+				break;
+				case 9:
+				break;
+
+			}
+
+	}
 	public void DeleteFlight() {
 		
 	}
@@ -94,12 +125,13 @@ public class LogicManager {
 		
 	}
 
-	public void UpdateBooking() {
+	public static void UpdateBooking() {
 	
 	}
 	public void ShowBooking() {
 		// ska printa i formatet Resenummer — Flygnummer — Avgångs stad(Avgångs dag) — Ankomst stad(Ankomst dag) — Veckonummer — År — Avgångstid — Ankomsttid
 	}
+	
 }
 
 

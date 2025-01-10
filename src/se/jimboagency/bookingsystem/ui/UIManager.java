@@ -1,6 +1,4 @@
 package se.jimboagency.bookingsystem.ui;
-
-import se.jimboagency.bookingsystem.*;
 import se.jimboagency.bookingsystem.logic.LogicManager;
 
 public class UIManager {
@@ -13,10 +11,10 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 ● Jimbo har has-a relation med UIManager( composition ).*/
 
 	private LogicManager logicmanager;
-	private Boolean val;
+	boolean continueLoop = true;
 	
 	public UIManager (LogicManager logicManager) {
-		this.logicmanager = logicManager;
+		this.setLogicmanager(logicManager);
 	}
 	
 	public void start(String[] args) {
@@ -31,6 +29,10 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 
 	private void showMainMenu() {
+		while(continueLoop = true) {
+			LogicManager.MainMenu();
+		}
+		
 		
 		/*Pseudocode
 		+                * bool continue = true;
@@ -46,5 +48,13 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		+                * };
 		+                * }
 		+                * */
+	}
+
+	public LogicManager getLogicmanager() {
+		return logicmanager;
+	}
+
+	public void setLogicmanager(LogicManager logicmanager) {
+		this.logicmanager = logicmanager;
 	}
 }
