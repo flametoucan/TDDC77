@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+<<<<<<< HEAD
+=======
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+>>>>>>> mabjo196
 import java.time.*;
 
 public class LogicManager {
@@ -41,17 +46,35 @@ public class LogicManager {
 		public static Flight CreateFlight() {
 			Scanner scanner = new Scanner(System.in);
 			
-			System.out.println("Enter flightnumber: ");
-			String FlightNumb = scanner.nextLine();
-			
 			System.out.println("Enter departure city: ");
 			String DepartureCity = scanner.nextLine();
+			
+			System.out.println("Enter arrival city: ");
+			String ArrivalCity = scanner.nextLine();
 			
 			System.out.println("Enter departure day: ");
 			String DepartureDay = scanner.nextLine();
 			
-			System.out.println("Enter departure time: ");
-			String DepartureTime = scanner.nextLine();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			LocalTime DepartureTime = null;
+			
+			while (DepartureTime == null) {
+	            try {
+	                System.out.print("Enter departure time: ");
+	                String departureTimeInput = scanner.nextLine();
+	                DepartureTime = LocalTime.parse(departureTimeInput, formatter);
+	            } catch (DateTimeParseException e) {
+	                System.out.println("Invalid time format. Please use HH:mm format! ");
+	            }
+			}
+	            
+			System.out.println("Enter travel time (hours): ");
+			long TravelTimeHours = scanner.nextLong();
+			
+			System.out.println("Enter travel time (minutes): ");
+			long TravelTimeMinutes = scanner.nextLong();
+			
+			LocalTime ArrivalTime = DepartureTime.plusHours(TravelTimeHours).plusMinutes(TravelTimeMinutes);
 			
 			System.out.println("Enter week number: ");
 			int Week = scanner.nextInt();
@@ -59,10 +82,7 @@ public class LogicManager {
 			System.out.println("Enter number of seats: ");
 			int NumberOfSeats = scanner.nextInt();
 			
-			System.out.println("Enter arrival city: ");
-			String ArrivalCity = scanner.nextLine();
-			
-			Flight flight = new Flight(FlightNumb, DepartureCity, DepartureDay, DepartureTime, Week, NumberOfSeats, ArrivalCity);
+			Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
 			return flight;
 			
 		}
