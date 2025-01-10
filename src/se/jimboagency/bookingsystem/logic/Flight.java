@@ -22,14 +22,10 @@ public class Flight {
 		this.ArrivalCity = ArrivalCity;
 		this.ArrivalDay = ArrivalDay;
 		this.ArrivalTime = ArrivalTime;
+		this.TravelTime = TravelTime;
 		this.Week = Week;
 		this.Year = Year;
 		this.NumberOfSeats = NumberOfSeats;
-	}
-
-	public Flight(String flightNumb2, String departureCity2, String departureDay2, String departureTime2, int week2,
-			int numberOfSeats2, String arrivalCity2) {
-		
 	}
 
 	public void Seats() {
@@ -79,6 +75,30 @@ public class Flight {
 	public void setArrivalCity(String arrivalCity) {
 		ArrivalCity = arrivalCity;
 	}
+	
+	public String getArrivalDay() {
+		return ArrivalDay;
+	}
+
+	public void setArrivalDay(String arrivalDay) {
+		ArrivalDay = arrivalDay;
+	}
+
+	public String getArrivalTime() {
+		return ArrivalTime;
+	}
+
+	public void setArrivalTime(String arrivalTime) {
+		ArrivalTime = arrivalTime;
+	}
+
+	public String getTravelTime() {
+		return TravelTime;
+	}
+
+	public void setTravelTime(String travelTime) {
+		TravelTime = travelTime;
+	}
 
 	public int getWeek() {
 		return Week;
@@ -106,12 +126,15 @@ public class Flight {
 	
 	@Override
 	public String toString() {
-		return "Flight " +FlightNumb +" { \t" + 
+		return "Flight created: " +FlightNumb +" { \n" + 
 		"Departure city = " +DepartureCity +"\t" +
+		"Arrival city = " +ArrivalCity +"\n" +
 		"Departure day = " +DepartureDay +"\t" +
+		"Arrival day = " +ArrivalDay +"\n" +
 		"Departure time = " +DepartureTime +"\t" +
+		"Arrival time = " +ArrivalTime +"\n" +
 		"Departure week = " +Week +"\t" +
-		"Number of seats = " +NumberOfSeats +"\t" +
-		"Arrival city = " +ArrivalCity;
+		"Number of seats = " +NumberOfSeats +"\t";
+	
 	}
 }
