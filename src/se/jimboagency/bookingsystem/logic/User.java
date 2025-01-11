@@ -2,16 +2,18 @@ package se.jimboagency.bookingsystem.logic;
 
 public class User {
 	
-	private String ett;
-	private String två;
+	private String username;
+	private String password;
 	
-	public String inlogg() {
-		return (this.ett + " " + this.två);
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 	
-	public User(String ett, String två) {
-		this.ett = ett;
-		this.två = två;
+	public String getUsername() {
+		return username;
 	}
-	//gör metod som kollar om värdena stämmer
+	public String getPassword() {
+		return password;
+	}
 }

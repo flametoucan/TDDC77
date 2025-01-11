@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import se.jimboagency.bookingsystem.logic.LogicManager;
+import se.jimboagency.bookingsystem.logic.Flight;
 
 public class UIManager {
 
@@ -22,19 +23,33 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 	
 	public void start(String[] args) {
-		
-		if(logicmanager.authenticate()) {
-			System.out.println(" Inloggning godkännd ");
+
+		if (logicmanager.authenticate()) {
+			System.out.println("Inloggning godkänd. Tryck enter för Main Menu.");
+			input.nextLine(); // användaren trycker Enter
 			showMainMenu();
-		}else {
-			System.out.println("Fel användarnamn eller lösenord");
+		} else {
+			System.out.println("Fel användarnamn eller lösenord.");
 		}
-		
+	}
+	
+	private Flight flight;
+
+	public UIManager (Flight flight) {
+		this.setFlight(flight);
 	}
 
-	public void MainMenu() {
+	private Scanner input = new Scanner(System.in);
+
+	public void showMainMenu() {
 		boolean continueLoop = true;
-		Scanner input = new Scanner(System.in);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		while(continueLoop) {
 			System.out.println("Menu:");
 			System.out.println("1. Create Flight");
@@ -47,22 +62,12 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 			System.out.println("9. Exit");
 			
 			//UImanager.Choice();
-
+			
 			int val = input.nextInt();
-
+			
 			switch (val) {
 				case 1:
-					//CreateFlight();
-					/*System.out.println(
-						"Flight created: " +Flight.getFlightNumber() +" { \n" + 
-						"Departure city = " +Flight.getDepartureCity() +"\t" +
-						"Arrival city = " +Flight.getArrivalCity() +"\n" +
-						"Departure day = " +Flight.getDepartureDay() +"\t" +
-						"Arrival day = " +Flight.getArrivalDay() +"\n" +
-						"Departure time = " +Flight.getDepartureTime() +"\t" +
-						"Arrival time = " +Flight.getArrivalTime() +"\n" +
-						"Departure week = " +Flight.getWeek() +"\t" +
-						"Number of seats = " +Flight.getNumberOfSeats() +"\t");*/
+					CreateFlight();
 				break;
 				case 2:
 					//DeleteFlight();
@@ -101,12 +106,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		}
 
 	}
-
-	private void showMainMenu() {
-		logicmanager.MainMenu();
-			
-		}
-
+	
 	public LogicManager getLogicmanager() {
 		return logicmanager;
 	}
@@ -114,6 +114,11 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	public void setLogicmanager(LogicManager logicmanager) {
 		this.logicmanager = logicmanager;
 	}
+	
+	public void setFlight(Flight flight) {
+		this.flight = flight;
+	}
+	
 	public int Choice() {
 		return 0;
 
@@ -162,14 +167,15 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		
 		System.out.println("Enter week number: ");
 		int Week = scanner.nextInt();
+
+		System.out.println("Enter which year: ");
+		int Year = scanner.nextInt();
 		
 		System.out.println("Enter number of seats: ");
 		int NumberOfSeats = scanner.nextInt();
-		
-		//scanner.close(); 
 
 		//Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
-		logicmanager.CreateFlight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
+		logicmanager.CreateFlight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
 		//return flight;
 	}
 }

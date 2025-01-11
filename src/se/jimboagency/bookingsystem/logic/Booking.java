@@ -1,9 +1,16 @@
 package se.jimboagency.bookingsystem.logic;
 
+import java.time.LocalTime;
 import java.util.Random;
 
 public abstract class Booking extends Flight{
 
+	public Booking(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay,
+			String ArrivalDay, LocalTime DepartureTime, LocalTime ArrivalTime, long TravelTimeHours,
+			long TravelTimeMinutes, int Week, int Year, int NumberOfSeats) {
+		super(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
+		// TODO Auto-generated constructor stub
+	}
 	private String TravelNumber;
 	private boolean IsUpdatable;
 	

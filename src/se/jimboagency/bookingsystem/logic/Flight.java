@@ -11,14 +11,15 @@ public class Flight extends Airline {
 	private LocalTime DepartureTime;
 	private String ArrivalCity;
 	private String ArrivalDay;
-	private String ArrivalTime;
+	private LocalTime ArrivalTime;
 	private long TravelTimeHours;
 	private long TravelTimeMinutes;
 	private int Week;
 	private int Year;
 	private int NumberOfSeats;
+	private Flight flight;
 	
-	public Flight (String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime, long TravelTimeHours, long TravelTimeMinutes, int Week, int Year) {
+	public Flight (String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime, LocalTime ArrivalTime, long TravelTimeHours, long TravelTimeMinutes, int Week, int Year, int NumberOfSeats) {
 		this.FlightNumber = FlightNumber;
 		this.DepartureCity = DepartureCity;
 		this.DepartureDay = DepartureDay;
@@ -33,6 +34,12 @@ public class Flight extends Airline {
 		this.NumberOfSeats = NumberOfSeats;
 	}
 
+
+	private void setFlight(Flight flight2) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void Seats() {
 		
 	}
@@ -98,11 +105,11 @@ public class Flight extends Airline {
 		ArrivalDay = arrivalDay;
 	}
 
-	public String getArrivalTime() {
+	public LocalTime getArrivalTime() {
 		return ArrivalTime;
 	}
 
-	public void setArrivalTime(String arrivalTime) {
+	public void setArrivalTime(LocalTime arrivalTime) {
 		ArrivalTime = arrivalTime;
 	}
 
