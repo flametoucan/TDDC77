@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import se.jimboagency.bookingsystem.logic.LogicManager;
 import se.jimboagency.bookingsystem.logic.Flight;
+import se.jimboagency.bookingsystem.logic.Airline;
 
 public class UIManager {
 
@@ -17,16 +18,20 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 ● Jimbo har has-a relation med UIManager( composition ).*/
 
 	private LogicManager logicmanager;
+	private Airline airline;
 
 	public UIManager (LogicManager logicmanager) {
 		this.setLogicmanager(logicmanager);
 	}
 	
+	public UIManager (Airline airline) {
+		this.setAirline(airline);
+	}
+
 	public void start(String[] args) {
 
 		if (logicmanager.authenticate()) {
-			System.out.println("Inloggning godkänd. Tryck enter för Main Menu.");
-			input.nextLine(); // användaren trycker Enter
+			System.out.println("Inloggning godkänd.");
 			showMainMenu();
 		} else {
 			System.out.println("Fel användarnamn eller lösenord.");
@@ -34,6 +39,8 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 	
 	private Flight flight;
+	
+	Flight flight1 = new Flight(null, null, null, null, null, null, null, 0, 0, 0, 0, 0);
 
 	public UIManager (Flight flight) {
 		this.setFlight(flight);
@@ -51,6 +58,15 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		}
 
 		while(continueLoop) {
+			
+			System.out.println("Tryck enter för Main Menu.");
+		    
+		    if (input.hasNextLine()) { 
+		        input.nextLine(); // Töm bufferten om det behövs
+		    }
+		    
+		    input.nextLine(); // Väntar på att användaren trycker Enter
+		    
 			System.out.println("Menu:");
 			System.out.println("1. Create Flight");
 			System.out.println("2. Delete Flight");
@@ -67,6 +83,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 			
 			switch (val) {
 				case 1:
+					//airline.ChooseAirline();
 					CreateFlight();
 				break;
 				case 2:
@@ -115,6 +132,10 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		this.logicmanager = logicmanager;
 	}
 	
+	public void setAirline(Airline airline) {
+		this.airline = airline;
+	}
+	
 	public void setFlight(Flight flight) {
 		this.flight = flight;
 	}
@@ -124,13 +145,11 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 
 	}
 
-
 	public void CreateFlight() {
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("Flight nym: ");
-		String FlightNumber = scanner.nextLine();
-		
+		String FlightNumber = flight1.FlightNumber();
+		System.out.println(FlightNumber);
 
 		System.out.println("Enter departure city: ");
 		String DepartureCity = scanner.nextLine();

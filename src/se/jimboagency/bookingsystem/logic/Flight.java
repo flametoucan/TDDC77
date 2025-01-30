@@ -54,7 +54,10 @@ public class Flight extends Airline {
         int number = random.nextInt(1000); // Skapar ett nummer mellan 000 och 999
 
         // Sätter ihop bokstäverna och numret och returnerar värdet som "XX000"
-        return String.format("%c%c%03d", letter1, letter2, number);
+        
+        FlightNumber = String.format("%c%c%03d", letter1, letter2, number);
+		
+        return this.FlightNumber;
 	}
 	
 	public String getFlightNumber() {
