@@ -6,6 +6,10 @@ import java.time.format.DateTimeParseException;
 import java.time.*;
 import se.jimboagency.bookingsystem.logic.Flight;
 import se.jimboagency.bookingsystem.ui.*;
+import com.google.gson.Gson;
+import com.google.gson.Gsonbuilder;
+import java.io.*;
+
 
 public class LogicManager {
 
@@ -53,11 +57,28 @@ public class LogicManager {
 		} 
 	return false;
 	}
-		
+
+	private static Map<String, Flight> flightMap = new HashMap<>();
+   	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
 	public String CreateFlight(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime,LocalTime ArrivalTime, Long TravelTimeHours,Long TravelTimeMinutes,int Week, int Year, int NumberOfSeats) {
-        // Test the createFlight method
-        //Flight newFlight = CreateFlight();
+
 		Flight flight = new Flight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
+		
+		//Savemethod to json file here
+		
+		private static void saveFlightsToJson() {
+        try (FileWriter file = new FileWriter("Flights.json")) {
+            String jsonOutput = gson.toJson(flightMap);
+            file.write(jsonOutput);
+            file.flush();
+            System.out.println("All flight data successfully saved to Flights.json");
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file:");
+            e.printStackTrace();
+        }
+    }
+
 		System.out.println(
 			"Flight created: " +flight.getFlightNumber() +" { \n" + 
 			"Departure city = " +flight.getDepartureCity() +"\t" +
@@ -68,7 +89,6 @@ public class LogicManager {
 			"Arrival time = " +flight.getArrivalTime() +"\n" +
 			"Departure week = " +flight.getWeek() +"\t" +
 			"Number of seats = " +flight.getNumberOfSeats() +"\t");
-       //System.out.println("Flight created: " + newFlight);
 				return "";
     }
 	
@@ -92,16 +112,5 @@ public class LogicManager {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
