@@ -1,0 +1,18 @@
+{
+  "SAS": {
+    "UM441": {
+      "FlightNumber": "UM441",
+      "DepartureCity": "a",
+      "DepartureDay": "a",
+      "DepartureTime": "13:45:00",
+      "ArrivalCity": "a",
+      "ArrivalDay": "a",
+      "ArrivalTime": "19:10:00",
+      "TravelTimeHours": 5,
+      "TravelTimeMinutes": 25,
+      "Week": 5,
+      "Year": 2025,
+      "NumberOfSeats": 205
+    }
+  }
+}

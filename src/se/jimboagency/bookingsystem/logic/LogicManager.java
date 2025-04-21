@@ -4,10 +4,11 @@ import java.util.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.*;
-import se.jimboagency.bookingsystem.logic.Flight;
+import se.jimboagency.bookingsystem.logic.*;
 import se.jimboagency.bookingsystem.ui.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import java.io.*;
 
 
@@ -16,6 +17,7 @@ public class LogicManager {
 	//inlogg
 	private String[] args;
 	private LogicManager logicmanager;
+	Airline airline = Airline.getInstance();
 	private List<User> users;
 		
 	public LogicManager(String[] args) {
@@ -28,6 +30,7 @@ public class LogicManager {
 		users.add(new User("johni001", "1k9h6d"));
 		users.add(new User("adabe001", "0o3u33"));
 
+		airline = new Airline();
 	}
 	
 	public boolean authenticate() {
@@ -58,16 +61,26 @@ public class LogicManager {
 	return false;
 	}
 
-	private static Map<String, Flight> flightMap = new HashMap<>();
-   	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	public String CreateFlight(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime,LocalTime ArrivalTime, Long TravelTimeHours,Long TravelTimeMinutes,int Week, int Year, int NumberOfSeats) {
+	private static Map<String, Map<String, Flight>> flightMap = new HashMap<>();
+   	private static final Gson gson = new GsonBuilder()
+   			.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+   			.setPrettyPrinting()
+   			.create();
+   		
+   	
+	public String CreateFlight(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime, LocalTime ArrivalTime, Long TravelTimeHours,Long TravelTimeMinutes,int Week, int Year, int NumberOfSeats) {
 
 		Flight flight = new Flight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
 		
 		//Savemethod to json file here
 		
-		flightMap.put(FlightNumber, flight);
+		String airlineName = Airline.getInstance().getAirlineCompany();
+		
+		Map<String, Flight> airlineFlights = flightMap.getOrDefault(airlineName, new HashMap<>());
+		airlineFlights.put(flight.getFlightNumber(), flight);
+		flightMap.put(airlineName, airlineFlights);
+		
+		//FIXA SKITEN RADERAR ALLTID
 
 		saveFlightsToJson();
 

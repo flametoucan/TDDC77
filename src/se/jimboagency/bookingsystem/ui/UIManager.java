@@ -18,7 +18,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 ● Jimbo har has-a relation med UIManager( composition ).*/
 
 	private LogicManager logicmanager;
-	private Airline airline;
+	Airline airline = Airline.getInstance();
 
 	public UIManager (LogicManager logicmanager) {
 		this.setLogicmanager(logicmanager);
@@ -71,11 +71,11 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 			System.out.println("1. Create Flight");
 			System.out.println("2. Delete Flight");
 			System.out.println("3. Create Booking");
-			System.out.println("5. Search Booking");
-			System.out.println("6. Update Booking");
-			System.out.println("7. Show Current Time");
-			System.out.println("8. Show Current Date");
-			System.out.println("9. Exit");
+			System.out.println("4. Search Booking");
+			System.out.println("5. Update Booking");
+			System.out.println("6. Show Current Time");
+			System.out.println("7. Show Current Date");
+			System.out.println("8. Exit");
 			
 			//UImanager.Choice();
 			
@@ -83,8 +83,12 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 			
 			switch (val) {
 				case 1:
-					//airline.ChooseAirline();
+					if (airline == null) {
+					    airline = new Airline();
+					}
+					airline.ChooseAirline();
 					CreateFlight();
+					
 				break;
 				case 2:
 					//DeleteFlight();
@@ -94,13 +98,13 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 					//CreateBooking();
 					
 				break;
-				case 5:
+				case 4:
 					//SearchBooking();
 				break;
-				case 6:
+				case 5:
 					//UpdateBooking();
 				break;
-				case 7:
+				case 6:
 				LocalTime currentTime = LocalTime.now();
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -108,7 +112,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		
 				System.out.println("Formatted time: " + formattedTime);
 				break;
-				case 8:
+				case 7:
 				LocalDate currentDate = LocalDate.now();
 
 	        	DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -116,7 +120,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 
         		System.out.println("Current Date: " + formattedDate);
 				break;
-				case 9:
+				case 8:
 					continueLoop = false;
 				break;
 
@@ -148,6 +152,8 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 
 	public void CreateFlight() {
 		Scanner scanner = new Scanner(System.in);
+		
+		airline.ChooseAirline();
 		
 		String FlightNumber = flight1.FlightNumber();
 		System.out.println(FlightNumber);
