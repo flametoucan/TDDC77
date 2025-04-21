@@ -92,6 +92,7 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 				break;
 				case 3:
 					//CreateBooking();
+					
 				break;
 				case 5:
 					//SearchBooking();

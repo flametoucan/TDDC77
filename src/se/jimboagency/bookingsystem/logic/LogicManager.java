@@ -7,7 +7,7 @@ import java.time.*;
 import se.jimboagency.bookingsystem.logic.Flight;
 import se.jimboagency.bookingsystem.ui.*;
 import com.google.gson.Gson;
-import com.google.gson.Gsonbuilder;
+import com.google.gson.GsonBuilder;
 import java.io.*;
 
 
@@ -67,17 +67,9 @@ public class LogicManager {
 		
 		//Savemethod to json file here
 		
-		private static void saveFlightsToJson() {
-        try (FileWriter file = new FileWriter("Flights.json")) {
-            String jsonOutput = gson.toJson(flightMap);
-            file.write(jsonOutput);
-            file.flush();
-            System.out.println("All flight data successfully saved to Flights.json");
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing to the file:");
-            e.printStackTrace();
-        }
-    }
+		flightMap.put(FlightNumber, flight);
+
+		saveFlightsToJson();
 
 		System.out.println(
 			"Flight created: " +flight.getFlightNumber() +" { \n" + 
@@ -91,6 +83,19 @@ public class LogicManager {
 			"Number of seats = " +flight.getNumberOfSeats() +"\t");
 				return "";
     }
+
+	private static void saveFlightsToJson() {
+        try (FileWriter file = new FileWriter("Flights.json")) {
+            String jsonOutput = gson.toJson(flightMap);
+            file.write(jsonOutput);
+            file.flush();
+            System.out.println("All flight data successfully saved to Flights.json");
+        } 
+		catch (IOException e) {
+            System.out.println("An error occurred while writing to the file:");
+            e.printStackTrace();
+        }	
+		}
 	
 	public void DeleteFlight() {
 		
