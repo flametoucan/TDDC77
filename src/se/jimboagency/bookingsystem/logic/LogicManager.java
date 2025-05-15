@@ -11,6 +11,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import java.io.*;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.nio.file.Paths;
 
 public class LogicManager {
 
@@ -19,7 +24,10 @@ public class LogicManager {
 	private LogicManager logicmanager;
 	Airline airline = Airline.getInstance();
 	private List<User> users;
-		
+
+    private static final String FLIGHT_FILE = Paths.get("src", "se", "jimboagency", "bookingsystem", "logic", "Flights.json").toString();
+    private static final Type flightDataType = new TypeToken<Map<String, Map<String, Flight>>>() {}.getType();
+
 	public LogicManager(String[] args) {
 		this.args = args;
 
@@ -30,7 +38,9 @@ public class LogicManager {
 		users.add(new User("johni001", "1k9h6d"));
 		users.add(new User("adabe001", "0o3u33"));
 
-		airline = new Airline();
+		this.airline = Airline.getInstance();
+
+		flightMap = loadFlightsFromJson();
 	}
 	
 	public boolean authenticate() {
@@ -98,7 +108,7 @@ public class LogicManager {
     }
 
 	private static void saveFlightsToJson() {
-        try (FileWriter file = new FileWriter("Flights.json")) {
+        try (FileWriter file = new FileWriter("src/se/jimboagency/bookingsystem/logic/Flights.json")) {
             String jsonOutput = gson.toJson(flightMap);
             file.write(jsonOutput);
             file.flush();
@@ -108,15 +118,132 @@ public class LogicManager {
             System.out.println("An error occurred while writing to the file:");
             e.printStackTrace();
         }	
+	}
+	
+	public static List<String> getAllAirlines() {
+		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
+			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+			return new ArrayList<>(data.keySet());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return Collections.emptyList();
+	}
+
+	public static List<String> getFlightsForAirline(String airline) {
+		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
+			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+			if (data.containsKey(airline)) {
+				return new ArrayList<>(data.get(airline).keySet());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
+	}
+
+	public static boolean flightExists(String flightNumber) {
+        try (FileReader reader = new FileReader(FLIGHT_FILE)) {
+            Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+            for (Map<String, Flight> flights : data.values()) {
+                if (flights.containsKey(flightNumber)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+	public static void deleteFlight(String flightNumber) {
+		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
+			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+
+			boolean found = false;
+
+			Iterator<Map.Entry<String, Map<String, Flight>>> iterator = data.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Map.Entry<String, Map<String, Flight>> airlineEntry = iterator.next();
+				Map<String, Flight> flights = airlineEntry.getValue();
+
+				if (flights.containsKey(flightNumber)) {
+					flights.remove(flightNumber);
+					found = true;
+
+					if (flights.isEmpty()) {
+						iterator.remove(); // Remove the airline if no flights are left
+					}
+					break;
+				}
+			}
+
+			if (found) {
+				try (FileWriter writer = new FileWriter(FLIGHT_FILE)) {
+					gson.toJson(data, writer);
+				}
+				System.out.println("Flight deleted: " + flightNumber);
+			} else {
+				System.out.println("Flight number not found.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+    }
+}
 	
-	public void DeleteFlight() {
-		
+	public void CreateBooking(String customerName, String flightNumber, String airlineName) {
+		Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson(); // Ladda befintliga flights
+
+		if (allFlights.containsKey(airlineName)) {
+			Map<String, Flight> airlineFlights = allFlights.get(airlineName);
+			if (airlineFlights.containsKey(flightNumber)) {
+				Flight selectedFlight = airlineFlights.get(flightNumber);
+
+				// Läs in befintliga bokningar
+				Map<String, Flight> bookings = loadBookingsFromJson();
+
+				// Lägg till bokning
+				bookings.put(customerName, selectedFlight);
+
+				// Spara
+				saveBookingsToJson(bookings);
+
+				System.out.println("Bokningen sparades för: " + customerName);
+			} else {
+				System.out.println("Flightnummer hittades inte.");
+			}
+		} else {
+			System.out.println("Airline finns inte.");
+		}
+	}
+
+	public Map<String, Map<String, Flight>> loadFlightsFromJson() {
+		try (Reader reader = new FileReader("src/se/jimboagency/bookingsystem/logic/Flights.json")) {
+			Type type = new TypeToken<Map<String, Map<String, Flight>>>() {}.getType();
+			return new Gson().fromJson(reader, type);
+		} catch (Exception e) {
+			System.out.println("Kunde inte läsa flights.json: " + e.getMessage());
+			return new HashMap<>();
+		}
+	}
+
+	public Map<String, Flight> loadBookingsFromJson() {
+		try (Reader reader = new FileReader("booking.json")) {
+			Type type = new TypeToken<Map<String, Flight>>(){}.getType();
+			return new Gson().fromJson(reader, type);
+		} catch (IOException e) {
+			return new HashMap<>(); // Returnera tom om filen inte finns
+		}
 	}
 	
-	public void CreateBooking() {
-		
+	public void saveBookingsToJson(Map<String, Flight> bookings) {
+		try (Writer writer = new FileWriter("booking.json")) {
+			new GsonBuilder().setPrettyPrinting().create().toJson(bookings, writer);
+		} catch (IOException e) {
+			System.out.println("Kunde inte spara bokning: " + e.getMessage());
+		}
 	}
+	
 
 	public void SearchBooking() {
 		

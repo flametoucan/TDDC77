@@ -3,6 +3,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import se.jimboagency.bookingsystem.logic.LogicManager;
@@ -27,6 +29,8 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	public UIManager (Airline airline) {
 		this.setAirline(airline);
 	}
+
+	private static final Scanner scanner = new Scanner(System.in);
 
 	public void start(String[] args) {
 
@@ -77,8 +81,6 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 			System.out.println("7. Show Current Date");
 			System.out.println("8. Exit");
 			
-			//UImanager.Choice();
-			
 			int val = input.nextInt();
 			
 			switch (val) {
@@ -86,16 +88,15 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 					if (airline == null) {
 					    airline = new Airline();
 					}
-					airline.ChooseAirline();
 					CreateFlight();
 					
 				break;
 				case 2:
-					//DeleteFlight();
-					//System.out.println("Flight deleted: " + Flight.getFlightNumber());
+					deleteFlightName();
+                
 				break;
 				case 3:
-					//CreateBooking();
+					CreateBooking();
 					
 				break;
 				case 4:
@@ -129,6 +130,54 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 
 	}
 	
+	public void CreateBooking() {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Välj flygbolag:");
+    System.out.println("1. SAS");
+	System.out.println("2. Lufthansa");
+	System.out.println("3. Emirates");
+	System.out.println("4. Ryanair");
+	System.out.println("5. KLM");
+
+	int AirlineChoice = input.nextInt();
+
+    String airline = switch (AirlineChoice) {
+        case 1 -> "SAS";
+        case 2 -> "Lufthansa";
+        case 3 -> "Emirates";
+        case 4 -> "Ryanair";
+        case 5 -> "KLM";
+        default -> {
+            System.out.println("Ogiltigt val.");
+			yield "Okänt flygbolag";
+        }
+    };
+
+    // Visa flights
+    Map<String, Map<String, Flight>> allFlights = logicmanager.loadFlightsFromJson();
+    Map<String, Flight> airlineFlights = allFlights.get(airline);
+
+    if (airlineFlights == null || airlineFlights.isEmpty()) {
+        System.out.println("Inga flights tillgängliga för detta bolag.");
+        return;
+    }
+
+    System.out.println("Tillgängliga flights:");
+    for (Map.Entry<String, Flight> entry : airlineFlights.entrySet()) {
+        System.out.println("FlightNumber: " + entry.getKey() + ", Från: " + entry.getValue().getDepartureCity() + ", Till: " + entry.getValue().getArrivalCity());
+    }
+
+    System.out.print("Skriv in flightnummer du vill boka: ");
+    String flightNumber = scanner.nextLine();
+
+    System.out.print("Skriv in ditt namn: ");
+    String customerName = scanner.nextLine();
+
+    logicmanager.CreateBooking(customerName, flightNumber, airline);
+	}
+
+
 	public LogicManager getLogicmanager() {
 		return logicmanager;
 	}
@@ -203,5 +252,49 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 		//Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
 		logicmanager.CreateFlight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
 		//return flight;
+	}
+	
+	public static void deleteFlightName() {
+		List<String> airlines = LogicManager.getAllAirlines();
+
+		if (airlines.isEmpty()) {
+			System.out.println("No airlines available.");
+			return;
+		}
+
+		System.out.println("Choose an airline:");
+		for (int i = 0; i < airlines.size(); i++) {
+			System.out.println((i + 1) + ". " + airlines.get(i));
+		}
+
+		System.out.print("Enter your choice (number): ");
+		int choice = Integer.parseInt(scanner.nextLine());
+
+		if (choice < 1 || choice > airlines.size()) {
+			System.out.println("Invalid airline choice.");
+			return;
+		}
+
+		String selectedAirline = airlines.get(choice - 1);
+		List<String> flights = LogicManager.getFlightsForAirline(selectedAirline);
+
+		if (flights.isEmpty()) {
+			System.out.println("No flights found for airline: " + selectedAirline);
+			return;
+		}
+
+		System.out.println("Flights under " + selectedAirline + ":");
+		for (String flight : flights) {
+			System.out.println("  - " + flight);
+		}
+
+		System.out.print("Enter the flight number you want to delete: ");
+		String flightNumber = scanner.nextLine();
+
+		if (flights.contains(flightNumber)) {
+			LogicManager.deleteFlight(flightNumber);
+		} else {
+			System.out.println("Invalid flight number.");
+		}
 	}
 }

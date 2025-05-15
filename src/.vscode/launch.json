@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "projekt/se.jimboagency.bookingsystem.jimbo",
             "projectName": "src_f76f7c77",
-            "args": "-u shipa001 -p 3eff43"
+            "args": "-u shipa001 -p 2eff43"
         },
         {
             "type": "java",
@@ -24,7 +24,7 @@
             "request": "launch",
             "mainClass": "projekt/se.jimboagency.bookingsystem.logic.LogicManager$CreateFlight",
             "projectName": "src_f76f7c77",
-            "args": "-u shipa001 -p 3eff43"
+            "args": "-u shipa001 -p 2eff43"
         }
     ]
 }

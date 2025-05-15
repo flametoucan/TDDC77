@@ -8,7 +8,7 @@ public class Airline {
 	private String AirlineCompany;
 	private transient Scanner input = new Scanner(System.in);
 
-	
+	//KANSKE SKITFEL INGEN KONSTRUKTUR MEN DÅ BLEV ALLT BAJS
 	
 	public static Airline getInstance() {
         if (instance == null) {
@@ -51,6 +51,7 @@ public class Airline {
 			break;
 		}
 		
+		//KANSKE INTE VÄLJA BOLAG 2 GÅNGER!?!?!?
 	}
 
 	public String getAirlineCompany() {

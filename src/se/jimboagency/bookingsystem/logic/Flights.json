@@ -1,0 +1,18 @@
+{
+  "SAS": {
+    "QJ184": {
+      "FlightNumber": "QJ184",
+      "DepartureCity": "f",
+      "DepartureDay": "f",
+      "DepartureTime": "14:00:00",
+      "ArrivalCity": "f",
+      "ArrivalDay": "f",
+      "ArrivalTime": "21:07:00",
+      "TravelTimeHours": 7,
+      "TravelTimeMinutes": 7,
+      "Week": 7,
+      "Year": 2025,
+      "NumberOfSeats": 200
+    }
+  }
+}
