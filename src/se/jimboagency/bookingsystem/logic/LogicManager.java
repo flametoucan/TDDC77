@@ -26,7 +26,8 @@ public class LogicManager {
 	private List<User> users;
 
     private static final String FLIGHT_FILE = Paths.get("src", "se", "jimboagency", "bookingsystem", "logic", "Flights.json").toString();
-    private static final Type flightDataType = new TypeToken<Map<String, Map<String, Flight>>>() {}.getType();
+    private static final String BOOKING_FILE = Paths.get("src", "se", "jimboagency", "bookingsystem", "logic", "Booking.json").toString();
+	private static final Type flightDataType = new TypeToken<Map<String, Map<String, Flight>>>() {}.getType();
 
 	public LogicManager(String[] args) {
 		this.args = args;
@@ -41,6 +42,7 @@ public class LogicManager {
 		this.airline = Airline.getInstance();
 
 		flightMap = loadFlightsFromJson();
+		bookings = loadBookingsFromJson();
 	}
 	
 	public boolean authenticate() {
@@ -72,25 +74,23 @@ public class LogicManager {
 	}
 
 	private static Map<String, Map<String, Flight>> flightMap = new HashMap<>();
-   	private static final Gson gson = new GsonBuilder()
-   			.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
-   			.setPrettyPrinting()
-   			.create();
+	private static Map<String, Flight> bookings = new HashMap<>();
+	private static final Gson gsonWithAdapters = new GsonBuilder()
+    	.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+    	.setPrettyPrinting()
+    	.create();
+
    		
    	
 	public String CreateFlight(String FlightNumber, String DepartureCity, String ArrivalCity, String DepartureDay, String ArrivalDay, LocalTime DepartureTime, LocalTime ArrivalTime, Long TravelTimeHours,Long TravelTimeMinutes,int Week, int Year, int NumberOfSeats) {
 
 		Flight flight = new Flight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
 		
-		//Savemethod to json file here
-		
 		String airlineName = Airline.getInstance().getAirlineCompany();
 		
 		Map<String, Flight> airlineFlights = flightMap.getOrDefault(airlineName, new HashMap<>());
 		airlineFlights.put(flight.getFlightNumber(), flight);
 		flightMap.put(airlineName, airlineFlights);
-		
-		//FIXA SKITEN RADERAR ALLTID
 
 		saveFlightsToJson();
 
@@ -108,21 +108,21 @@ public class LogicManager {
     }
 
 	private static void saveFlightsToJson() {
-        try (FileWriter file = new FileWriter("src/se/jimboagency/bookingsystem/logic/Flights.json")) {
-            String jsonOutput = gson.toJson(flightMap);
-            file.write(jsonOutput);
-            file.flush();
-            System.out.println("All flight data successfully saved to Flights.json");
-        } 
-		catch (IOException e) {
-            System.out.println("An error occurred while writing to the file:");
-            e.printStackTrace();
-        }	
+		try (FileWriter file = new FileWriter(FLIGHT_FILE)) {
+			String jsonOutput = gsonWithAdapters.toJson(flightMap);
+			file.write(jsonOutput);
+			file.flush();
+			System.out.println("All flight data successfully saved to Flights.json");
+		} catch (IOException e) {
+			System.out.println("An error occurred while writing to the file:");
+			e.printStackTrace();
+		}
 	}
+	
 	
 	public static List<String> getAllAirlines() {
 		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
-			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+			Map<String, Map<String, Flight>> data = gsonWithAdapters.fromJson(reader, flightDataType);
 			return new ArrayList<>(data.keySet());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class LogicManager {
 
 	public static List<String> getFlightsForAirline(String airline) {
 		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
-			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+			Map<String, Map<String, Flight>> data = gsonWithAdapters.fromJson(reader, flightDataType);
 			if (data.containsKey(airline)) {
 				return new ArrayList<>(data.get(airline).keySet());
 			}
@@ -144,7 +144,7 @@ public class LogicManager {
 
 	public static boolean flightExists(String flightNumber) {
         try (FileReader reader = new FileReader(FLIGHT_FILE)) {
-            Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+            Map<String, Map<String, Flight>> data = gsonWithAdapters.fromJson(reader, flightDataType);
             for (Map<String, Flight> flights : data.values()) {
                 if (flights.containsKey(flightNumber)) {
                     return true;
@@ -158,7 +158,7 @@ public class LogicManager {
 
 	public static void deleteFlight(String flightNumber) {
 		try (FileReader reader = new FileReader(FLIGHT_FILE)) {
-			Map<String, Map<String, Flight>> data = gson.fromJson(reader, flightDataType);
+			Map<String, Map<String, Flight>> data = gsonWithAdapters.fromJson(reader, flightDataType);
 
 			boolean found = false;
 
@@ -180,7 +180,7 @@ public class LogicManager {
 
 			if (found) {
 				try (FileWriter writer = new FileWriter(FLIGHT_FILE)) {
-					gson.toJson(data, writer);
+					gsonWithAdapters.toJson(data, writer);
 				}
 				System.out.println("Flight deleted: " + flightNumber);
 			} else {
@@ -192,21 +192,16 @@ public class LogicManager {
 }
 	
 	public void CreateBooking(String customerName, String flightNumber, String airlineName) {
-		Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson(); // Ladda befintliga flights
+		Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson();
 
 		if (allFlights.containsKey(airlineName)) {
 			Map<String, Flight> airlineFlights = allFlights.get(airlineName);
 			if (airlineFlights.containsKey(flightNumber)) {
 				Flight selectedFlight = airlineFlights.get(flightNumber);
 
-				// Läs in befintliga bokningar
-				Map<String, Flight> bookings = loadBookingsFromJson();
+				bookings.put(customerName, selectedFlight); // Lägg till ny bokning
 
-				// Lägg till bokning
-				bookings.put(customerName, selectedFlight);
-
-				// Spara
-				saveBookingsToJson(bookings);
+				saveBookingsToJson(bookings); // Spara till filen
 
 				System.out.println("Bokningen sparades för: " + customerName);
 			} else {
@@ -217,34 +212,42 @@ public class LogicManager {
 		}
 	}
 
+
 	public Map<String, Map<String, Flight>> loadFlightsFromJson() {
-		try (Reader reader = new FileReader("src/se/jimboagency/bookingsystem/logic/Flights.json")) {
+		try (Reader reader = new FileReader(FLIGHT_FILE)) {
 			Type type = new TypeToken<Map<String, Map<String, Flight>>>() {}.getType();
-			return new Gson().fromJson(reader, type);
-		} catch (Exception e) {
+			Map<String, Map<String, Flight>> flights = gsonWithAdapters.fromJson(reader, type);
+			return flights != null ? flights : new HashMap<>();
+		} catch (IOException e) {
 			System.out.println("Kunde inte läsa flights.json: " + e.getMessage());
 			return new HashMap<>();
 		}
 	}
+	
+	
 
 	public Map<String, Flight> loadBookingsFromJson() {
-		try (Reader reader = new FileReader("booking.json")) {
+		File file = new File(BOOKING_FILE);
+	
+	
+		try (Reader reader = new FileReader(file)) {
 			Type type = new TypeToken<Map<String, Flight>>(){}.getType();
-			return new Gson().fromJson(reader, type);
-		} catch (IOException e) {
-			return new HashMap<>(); // Returnera tom om filen inte finns
+			return gsonWithAdapters.fromJson(reader, type);
+		} catch (Exception e) {
+			System.out.println("Kunde inte läsa Booking.json: " + e.getMessage());
+			return new HashMap<>();
 		}
-	}
+	}	
+	
 	
 	public void saveBookingsToJson(Map<String, Flight> bookings) {
-		try (Writer writer = new FileWriter("booking.json")) {
-			new GsonBuilder().setPrettyPrinting().create().toJson(bookings, writer);
+		try (Writer writer = new FileWriter(BOOKING_FILE)) {
+			gsonWithAdapters.toJson(bookings, writer);
 		} catch (IOException e) {
 			System.out.println("Kunde inte spara bokning: " + e.getMessage());
 		}
 	}
 	
-
 	public void SearchBooking() {
 		
 	}
@@ -252,6 +255,7 @@ public class LogicManager {
 	public void UpdateBooking() {
 	
 	}
+	
 	public void ShowBooking() {
 		// ska printa i formatet Resenummer — Flygnummer — Avgångs stad(Avgångs dag) — Ankomst stad(Ankomst dag) — Veckonummer — År — Avgångstid — Ankomsttid
 	}

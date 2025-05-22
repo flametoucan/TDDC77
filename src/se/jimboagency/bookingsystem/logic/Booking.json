@@ -1,0 +1,44 @@
+{
+  "Marcus": {
+    "FlightNumber": "RY516",
+    "DepartureCity": "h",
+    "DepartureDay": "h",
+    "DepartureTime": "12:00:00",
+    "ArrivalCity": "h",
+    "ArrivalDay": "h",
+    "ArrivalTime": "14:02:00",
+    "TravelTimeHours": 2,
+    "TravelTimeMinutes": 2,
+    "Week": 2,
+    "Year": 2025,
+    "NumberOfSeats": 190
+  },
+  "Jonas": {
+    "FlightNumber": "RY516",
+    "DepartureCity": "h",
+    "DepartureDay": "h",
+    "DepartureTime": "12:00:00",
+    "ArrivalCity": "h",
+    "ArrivalDay": "h",
+    "ArrivalTime": "14:02:00",
+    "TravelTimeHours": 2,
+    "TravelTimeMinutes": 2,
+    "Week": 2,
+    "Year": 2025,
+    "NumberOfSeats": 190
+  },
+  "Pelle": {
+    "FlightNumber": "IT484",
+    "DepartureCity": "e",
+    "DepartureDay": "e",
+    "DepartureTime": "13:00:00",
+    "ArrivalCity": "e",
+    "ArrivalDay": "e",
+    "ArrivalTime": "16:03:00",
+    "TravelTimeHours": 3,
+    "TravelTimeMinutes": 3,
+    "Week": 3,
+    "Year": 2025,
+    "NumberOfSeats": 200
+  }
+}

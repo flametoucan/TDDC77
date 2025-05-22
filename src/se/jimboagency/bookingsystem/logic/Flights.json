@@ -1,16 +1,46 @@
 {
   "SAS": {
-    "QJ184": {
-      "FlightNumber": "QJ184",
-      "DepartureCity": "f",
-      "DepartureDay": "f",
-      "DepartureTime": "14:00:00",
-      "ArrivalCity": "f",
-      "ArrivalDay": "f",
-      "ArrivalTime": "21:07:00",
-      "TravelTimeHours": 7,
-      "TravelTimeMinutes": 7,
-      "Week": 7,
+    "RY516": {
+      "FlightNumber": "RY516",
+      "DepartureCity": "h",
+      "DepartureDay": "h",
+      "DepartureTime": "12:00:00",
+      "ArrivalCity": "h",
+      "ArrivalDay": "h",
+      "ArrivalTime": "14:02:00",
+      "TravelTimeHours": 2,
+      "TravelTimeMinutes": 2,
+      "Week": 2,
+      "Year": 2025,
+      "NumberOfSeats": 190
+    },
+    "IT484": {
+      "FlightNumber": "IT484",
+      "DepartureCity": "e",
+      "DepartureDay": "e",
+      "DepartureTime": "13:00:00",
+      "ArrivalCity": "e",
+      "ArrivalDay": "e",
+      "ArrivalTime": "16:03:00",
+      "TravelTimeHours": 3,
+      "TravelTimeMinutes": 3,
+      "Week": 3,
+      "Year": 2025,
+      "NumberOfSeats": 200
+    }
+  },
+  "Lufthansa": {
+    "UY336": {
+      "FlightNumber": "UY336",
+      "DepartureCity": "k",
+      "DepartureDay": "k",
+      "DepartureTime": "13:00:00",
+      "ArrivalCity": "k",
+      "ArrivalDay": "k",
+      "ArrivalTime": "16:03:00",
+      "TravelTimeHours": 3,
+      "TravelTimeMinutes": 3,
+      "Week": 3,
       "Year": 2025,
       "NumberOfSeats": 200
     }

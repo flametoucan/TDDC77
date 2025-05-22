@@ -1,38 +1,23 @@
 package se.jimboagency.bookingsystem.logic;
 
-import java.util.*;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.*;
-import se.jimboagency.bookingsystem.logic.Flight;
-import se.jimboagency.bookingsystem.ui.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.google.gson.stream.JsonToken;
-import java.io.*;
 
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class LocalTimeAdapter extends TypeAdapter<LocalTime> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm[:ss]");
 
     @Override
     public void write(JsonWriter out, LocalTime value) throws IOException {
-        if (value == null) {
-            out.nullValue();
-        } else {
-            out.value(value.format(formatter));
-        }
+        out.value(value.format(FORMATTER));
     }
 
     @Override
     public LocalTime read(JsonReader in) throws IOException {
-    	if (in.peek() == JsonToken.NULL) {
-            in.nextNull();
-            return null;
-        }
-        return LocalTime.parse(in.nextString(), formatter);
+        return LocalTime.parse(in.nextString(), FORMATTER);
     }
 }
