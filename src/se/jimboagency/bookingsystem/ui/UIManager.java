@@ -100,10 +100,27 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 					
 				break;
 				case 4:
-					//SearchBooking();
+					Scanner scanner = new Scanner(System.in);
+					System.out.print("Sök bokning efter kundnamn eller flightnummer: ");
+					String input = scanner.nextLine();
+					
+					logicmanager.SearchBooking(input);
+				
 				break;
 				case 5:
-					//UpdateBooking();
+					Scanner scanname = new Scanner(System.in);
+					System.out.print("Sök bokning efter kundnamn: ");
+					String inputname = scanname.nextLine();
+
+					Scanner scannumb = new Scanner(System.in);
+					System.out.print("Skriv in den nya flighten du vill boka: ");
+					String inputnumb = scannumb.nextLine();
+
+					Scanner scanair = new Scanner(System.in);
+					System.out.print("skriv in den nya airlinen du vill boka: ");
+					String inputair = scanair.nextLine();
+
+					logicmanager.UpdateBooking(inputname, inputnumb, inputair);
 				break;
 				case 6:
 				LocalTime currentTime = LocalTime.now();
@@ -131,50 +148,50 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 	
 	public void CreateBooking() {
-    Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Välj flygbolag:");
-    System.out.println("1. SAS");
-	System.out.println("2. Lufthansa");
-	System.out.println("3. Emirates");
-	System.out.println("4. Ryanair");
-	System.out.println("5. KLM");
+		System.out.println("Välj flygbolag:");
+		System.out.println("1. SAS");
+		System.out.println("2. Lufthansa");
+		System.out.println("3. Emirates");
+		System.out.println("4. Ryanair");
+		System.out.println("5. KLM");
 
-	int AirlineChoice = input.nextInt();
+		int AirlineChoice = input.nextInt();
 
-    String airline = switch (AirlineChoice) {
-        case 1 -> "SAS";
-        case 2 -> "Lufthansa";
-        case 3 -> "Emirates";
-        case 4 -> "Ryanair";
-        case 5 -> "KLM";
-        default -> {
-            System.out.println("Ogiltigt val.");
-			yield "Okänt flygbolag";
-        }
-    };
+		String airline = switch (AirlineChoice) {
+			case 1 -> "SAS";
+			case 2 -> "Lufthansa";
+			case 3 -> "Emirates";
+			case 4 -> "Ryanair";
+			case 5 -> "KLM";
+			default -> {
+				System.out.println("Ogiltigt val.");
+				yield "Okänt flygbolag";
+			}
+		};
 
-    // Visa flights
-    Map<String, Map<String, Flight>> allFlights = logicmanager.loadFlightsFromJson();
-    Map<String, Flight> airlineFlights = allFlights.get(airline);
+		// Visa flights
+		Map<String, Map<String, Flight>> allFlights = logicmanager.loadFlightsFromJson();
+		Map<String, Flight> airlineFlights = allFlights.get(airline);
 
-    if (airlineFlights == null || airlineFlights.isEmpty()) {
-        System.out.println("Inga flights tillgängliga för detta bolag.");
-        return;
-    }
+		if (airlineFlights == null || airlineFlights.isEmpty()) {
+			System.out.println("Inga flights tillgängliga för detta bolag.");
+			return;
+		}
 
-    System.out.println("Tillgängliga flights:");
-    for (Map.Entry<String, Flight> entry : airlineFlights.entrySet()) {
-        System.out.println("FlightNumber: " + entry.getKey() + ", Från: " + entry.getValue().getDepartureCity() + ", Till: " + entry.getValue().getArrivalCity());
-    }
+		System.out.println("Tillgängliga flights:");
+		for (Map.Entry<String, Flight> entry : airlineFlights.entrySet()) {
+			System.out.println("FlightNumber: " + entry.getKey() + ", Från: " + entry.getValue().getDepartureCity() + ", Till: " + entry.getValue().getArrivalCity());
+		}
 
-    System.out.print("Skriv in flightnummer du vill boka: ");
-    String flightNumber = scanner.nextLine();
+		System.out.print("Skriv in flightnummer du vill boka: ");
+		String flightNumber = scanner.nextLine();
 
-    System.out.print("Skriv in ditt namn: ");
-    String customerName = scanner.nextLine();
+		System.out.print("Skriv in ditt namn: ");
+		String customerName = scanner.nextLine();
 
-    logicmanager.CreateBooking(customerName, flightNumber, airline);
+		logicmanager.CreateBooking(customerName, flightNumber, airline); 
 	}
 
 

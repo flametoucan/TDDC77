@@ -74,7 +74,7 @@ public class LogicManager {
 	}
 
 	private static Map<String, Map<String, Flight>> flightMap = new HashMap<>();
-	private static Map<String, Flight> bookings = new HashMap<>();
+	private static Map<String, BookingEntry> bookings = new HashMap<>();
 	private static final Gson gsonWithAdapters = new GsonBuilder()
     	.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
     	.setPrettyPrinting()
@@ -191,26 +191,34 @@ public class LogicManager {
     }
 }
 	
-	public void CreateBooking(String customerName, String flightNumber, String airlineName) {
-		Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson();
+public void CreateBooking(String customerName, String flightNumber, String airlineName) {
+    Map<String, BookingEntry> bookings = loadBookingsFromJson();
+    Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson();
 
-		if (allFlights.containsKey(airlineName)) {
-			Map<String, Flight> airlineFlights = allFlights.get(airlineName);
-			if (airlineFlights.containsKey(flightNumber)) {
-				Flight selectedFlight = airlineFlights.get(flightNumber);
+    if (allFlights.containsKey(airlineName)) {
+        Map<String, Flight> airlineFlights = allFlights.get(airlineName);
+        if (airlineFlights.containsKey(flightNumber)) {
+            Flight selectedFlight = airlineFlights.get(flightNumber);
 
-				bookings.put(customerName, selectedFlight); // Lägg till ny bokning
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Vill du att bokningen ska kunna uppdateras i framtiden? (ja/nej): ");
+            String answer = scanner.nextLine().trim().toLowerCase();
+            boolean updatable = answer.equals("ja");
 
-				saveBookingsToJson(bookings); // Spara till filen
+            BookingEntry entry = new BookingEntry(customerName, selectedFlight, updatable);
+            bookings.put(customerName, entry);
 
-				System.out.println("Bokningen sparades för: " + customerName);
-			} else {
-				System.out.println("Flightnummer hittades inte.");
-			}
-		} else {
-			System.out.println("Airline finns inte.");
-		}
-	}
+            saveBookingsToJson(bookings);
+
+            System.out.println("Bokningen sparades för: " + customerName);
+        } else {
+            System.out.println("Flightnummer hittades inte.");
+        }
+    } else {
+        System.out.println("Airline finns inte.");
+    }
+}
+
 
 
 	public Map<String, Map<String, Flight>> loadFlightsFromJson() {
@@ -226,38 +234,84 @@ public class LogicManager {
 	
 	
 
-	public Map<String, Flight> loadBookingsFromJson() {
+	public Map<String, BookingEntry> loadBookingsFromJson() {
 		File file = new File(BOOKING_FILE);
-	
-	
 		try (Reader reader = new FileReader(file)) {
-			Type type = new TypeToken<Map<String, Flight>>(){}.getType();
+			Type type = new TypeToken<Map<String, BookingEntry>>(){}.getType();
 			return gsonWithAdapters.fromJson(reader, type);
 		} catch (Exception e) {
 			System.out.println("Kunde inte läsa Booking.json: " + e.getMessage());
 			return new HashMap<>();
 		}
-	}	
+	}
 	
 	
-	public void saveBookingsToJson(Map<String, Flight> bookings) {
+	public void saveBookingsToJson(Map<String, BookingEntry> bookings) {
 		try (Writer writer = new FileWriter(BOOKING_FILE)) {
 			gsonWithAdapters.toJson(bookings, writer);
 		} catch (IOException e) {
 			System.out.println("Kunde inte spara bokning: " + e.getMessage());
 		}
+	}	
+	
+	
+	public void SearchBooking(String searchTerm) {
+		boolean found = false;
+	
+		for (Map.Entry<String, BookingEntry> entry : bookings.entrySet()) {
+			String customerName = entry.getKey();
+			BookingEntry bookingEntry = entry.getValue();
+			Flight flight = bookingEntry.getFlight();
+	
+			if (customerName.equalsIgnoreCase(searchTerm) || flight.getFlightNumber().equalsIgnoreCase(searchTerm)) {
+				System.out.println("  Bokning hittad:");
+				System.out.println("  Kundnamn: " + customerName);
+				System.out.println("  Flightnummer: " + flight.getFlightNumber());
+				System.out.println("  Avgång: " + flight.getDepartureCity() + " (" + flight.getDepartureDay() + ")");
+				System.out.println("  Ankomst: " + flight.getArrivalCity() + " (" + flight.getArrivalDay() + ")");
+				System.out.println("  Vecka: " + flight.getWeek() + "  År: " + flight.getYear());
+				System.out.println("  Tid: " + flight.getDepartureTime() + " -> " + flight.getArrivalTime());
+				System.out.println("  Uppdateringsbar: " + (bookingEntry.isUpdatable() ? "Ja" : "Nej"));
+				System.out.println();
+				found = true;
+			}
+		}
+	
+		if (!found) {
+			System.out.println("  Ingen bokning hittades för: " + searchTerm);
+		}
 	}
 	
-	public void SearchBooking() {
-		
-	}
 	
-	public void UpdateBooking() {
 	
+	public void UpdateBooking(String customerName, String newFlightNumber, String airlineName) {
+		Map<String, BookingEntry> bookings = loadBookingsFromJson();
+		Map<String, Map<String, Flight>> allFlights = loadFlightsFromJson();
+	
+		if (!bookings.containsKey(customerName)) {
+			System.out.println("Ingen bokning hittades för: " + customerName);
+			return;
+		}
+	
+		BookingEntry entry = bookings.get(customerName);
+		if (!entry.isUpdatable()) {
+			System.out.println("Denna bokning kan inte uppdateras.");
+			return;
+		}
+	
+		if (!allFlights.containsKey(airlineName) || !allFlights.get(airlineName).containsKey(newFlightNumber)) {
+			System.out.println("Det nya flightnumret hittades inte.");
+			return;
+		}
+	
+		entry.setFlight(allFlights.get(airlineName).get(newFlightNumber));
+		saveBookingsToJson(bookings);
+	
+		System.out.println("Bokning uppdaterad för: " + customerName);
 	}
 	
 	public void ShowBooking() {
-		// ska printa i formatet Resenummer — Flygnummer — Avgångs stad(Avgångs dag) — Ankomst stad(Ankomst dag) — Veckonummer — År — Avgångstid — Ankomsttid
+		
 	}
 	
 }
