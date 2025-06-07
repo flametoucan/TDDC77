@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -217,59 +218,85 @@ användaren, läsa in data och skriva ut resultat/felmeddelanden.
 	}
 
 	public void CreateFlight() {
-		Scanner scanner = new Scanner(System.in);
-		
-		airline.ChooseAirline();
-		
-		String FlightNumber = flight1.FlightNumber();
-		System.out.println(FlightNumber);
+    Scanner scanner = new Scanner(System.in);
 
-		System.out.println("Enter departure city: ");
-		String DepartureCity = scanner.nextLine();
-		
-		System.out.println("Enter arrival city: ");
-		String ArrivalCity = scanner.nextLine();
-		
-		System.out.println("Enter departure day: ");
-		String DepartureDay = scanner.nextLine();
+    List<String> validAirports = Arrays.asList("LKP", "ARN", "CPH", "OSL", "GOT", "HEL");
+    List<String> validDays = Arrays.asList("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
 
-		System.out.println("Enter arrival day: ");
-		String ArrivalDay = scanner.nextLine();
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		LocalTime DepartureTime = null;
-		
-		while (DepartureTime == null) {
-			try {
-				System.out.print("Enter departure time: ");
-				String departureTimeInput = scanner.nextLine();
-				DepartureTime = LocalTime.parse(departureTimeInput, formatter);
-			} catch (DateTimeParseException e) {
-				System.out.println("Invalid time format. Please use HH:mm format! ");
-			}
-		}
-	            
-		System.out.println("Enter travel time (hours): ");
-		long TravelTimeHours = scanner.nextLong();
-		
-		System.out.println("Enter travel time (minutes): ");
-		long TravelTimeMinutes = scanner.nextLong();
-		
-		LocalTime ArrivalTime = DepartureTime.plusHours(TravelTimeHours).plusMinutes(TravelTimeMinutes);
-		
-		System.out.println("Enter week number: ");
-		int Week = scanner.nextInt();
+    airline.ChooseAirline();
 
-		System.out.println("Enter which year: ");
-		int Year = scanner.nextInt();
-		
-		System.out.println("Enter number of seats: ");
-		int NumberOfSeats = scanner.nextInt();
+    String FlightNumber = flight1.FlightNumber();
+    System.out.println(FlightNumber);
 
-		//Flight flight = new Flight(DepartureCity, ArrivalCity, DepartureDay, DepartureTime, TravelTimeHours, TravelTimeMinutes, Week, NumberOfSeats);
-		logicmanager.CreateFlight(FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay, DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes, Week, Year, NumberOfSeats);
-		//return flight;
-	}
+    String DepartureCity;
+    while (true) {
+        System.out.println("Enter departure city (LKP, ARN, CPH, OSL, GOT, HEL): ");
+        DepartureCity = scanner.nextLine().trim().toUpperCase();
+        if (validAirports.contains(DepartureCity)) break;
+        System.out.println("Invalid airport code. Try again.");
+    }
+
+    String ArrivalCity;
+    while (true) {
+        System.out.println("Enter arrival city (LKP, ARN, CPH, OSL, GOT, HEL): ");
+        ArrivalCity = scanner.nextLine().trim().toUpperCase();
+        if (validAirports.contains(ArrivalCity)) break;
+        System.out.println("Invalid airport code. Try again.");
+    }
+
+    String DepartureDay;
+    while (true) {
+        System.out.println("Enter departure day (Måndag - Söndag): ");
+        DepartureDay = scanner.nextLine().trim();
+        if (validDays.contains(DepartureDay)) break;
+        System.out.println("Invalid day. Try again.");
+    }
+
+    String ArrivalDay;
+    while (true) {
+        System.out.println("Enter arrival day (Måndag - Söndag): ");
+        ArrivalDay = scanner.nextLine().trim();
+        if (validDays.contains(ArrivalDay)) break;
+        System.out.println("Invalid day. Try again.");
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    LocalTime DepartureTime = null;
+
+    while (DepartureTime == null) {
+        try {
+            System.out.print("Enter departure time (HH:mm): ");
+            String departureTimeInput = scanner.nextLine();
+            DepartureTime = LocalTime.parse(departureTimeInput, formatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid time format. Please use HH:mm format.");
+        }
+    }
+
+    System.out.println("Enter travel time (hours): ");
+    long TravelTimeHours = scanner.nextLong();
+
+    System.out.println("Enter travel time (minutes): ");
+    long TravelTimeMinutes = scanner.nextLong();
+
+    LocalTime ArrivalTime = DepartureTime.plusHours(TravelTimeHours).plusMinutes(TravelTimeMinutes);
+
+    System.out.println("Enter week number: ");
+    int Week = scanner.nextInt();
+
+    System.out.println("Enter which year: ");
+    int Year = scanner.nextInt();
+
+    System.out.println("Enter number of seats: ");
+    int NumberOfSeats = scanner.nextInt();
+
+    logicmanager.CreateFlight(
+        FlightNumber, DepartureCity, ArrivalCity, DepartureDay, ArrivalDay,
+        DepartureTime, ArrivalTime, TravelTimeHours, TravelTimeMinutes,
+        Week, Year, NumberOfSeats
+    );
+}
+
 	
 	public static void deleteFlightName() {
 		List<String> airlines = LogicManager.getAllAirlines();
